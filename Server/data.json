@@ -1,0 +1,19 @@
+{
+    "d":[
+        {
+            "id": 1,
+            "name": "Android",
+            "description": "Mobile OS from Google"
+        },
+        {
+            "id": 2,
+            "name": "Windows",
+            "description": "Desktop OS from Google"
+        },
+        {
+            "id": 3,
+            "name": "iOS",
+            "description": "Mobile OS from Apple"
+        }
+    ]
+}
