@@ -90,10 +90,3 @@ export default class SimpleGrid extends React.Component {
            )
   }
 }
-
-/*
-
-<View style={[{flex:1, flexDirection: 'column'}]}>
-                  { this._generateRow() }
-                </View>
-*/

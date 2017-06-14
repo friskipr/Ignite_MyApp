@@ -3,17 +3,42 @@
         {
             "id": 1,
             "name": "Android",
-            "description": "Mobile OS from Google"
+            "description": "Mobile OS from Google",
+            "quantity": 40,
+            "price": 652231,
+            "SKU": "BL0101122"
         },
         {
             "id": 2,
             "name": "Windows",
-            "description": "Desktop OS from Google"
+            "description": "Desktop OS from Google",
+            "quantity": 5,
+            "price": 112000,
+            "SKU": "BL0101123"
         },
         {
             "id": 3,
             "name": "iOS",
-            "description": "Mobile OS from Apple"
+            "description": "Mobile OS from Apple",
+            "quantity": 1,
+            "price": 65223000,
+            "SKU": "BL0101124"
+        },
+        {
+            "id": 4,
+            "name": "Android",
+            "description": "Mobile OS from Google",
+            "quantity": 40,
+            "price": 652231,
+            "SKU": "BL0101122"
+        },
+        {
+            "id": 5,
+            "name": "Windows",
+            "description": "Desktop OS from Google",
+            "quantity": 5,
+            "price": 112000,
+            "SKU": "BL0101123"
         }
     ]
 }

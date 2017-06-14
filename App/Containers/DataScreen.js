@@ -1,9 +1,10 @@
 import React from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
+import { ScrollView, Image, View } from 'react-native'
 import SimpleGrid from '../Components/Grid'
 import api from '../Services/DataApi'
 import _ from 'lodash'
-import styles from './Styles/LaunchScreenStyles'
+import styles from './Styles/DataScreenStyles'
+import { Icon, Text } from 'react-native-elements'
 
 export default class DataScreen extends React.Component {
     constructor(props) {    
@@ -15,7 +16,7 @@ export default class DataScreen extends React.Component {
 
     componentDidMount() {
         api.getData
-           .then( x => this.setState({ data: x.data }) )
+           .then( x => this.setState({ data: x.data.d }) )
            .catch( e => alert(e) )
     }
 
@@ -30,11 +31,23 @@ export default class DataScreen extends React.Component {
     }
 
     render () {
+        const { navigate } = this.props.navigation
+
         return (
-            <SimpleGrid
-                headers={this._getHeaders()}
-                content={this.state.data}
-            />
+            <View style={{flex:1}}>
+                <Text h2
+                    style={styles.tableHeading}>Inventory Table</Text>
+
+                <SimpleGrid
+                    headers={this._getHeaders()}
+                    content={this.state.data}
+                />
+
+                <Icon
+                    name='add-box' 
+                    onPress={() => navigate('DataFormScreen')}
+                />
+            </View>
         )
     }
 }

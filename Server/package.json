@@ -1,14 +1,13 @@
-{ 
-   "name": "myapp-server", 
-   "version": "0.0.1", 
-   "description": "server project.", 
-   "scripts": { 
-     "lite": "lite-server –port 10001", 
-     "start": "npm run lite" 
-   }, 
-   "author": "", 
-   "license": "MIT", 
-   "devDependencies": { 
-     "lite-server": "^2.0.0" 
-   } 
+{
+  "name": "myapp-server",
+  "version": "0.0.1",
+  "description": "server project.",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.15.3"
+  }
 }
