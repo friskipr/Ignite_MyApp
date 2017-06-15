@@ -5,17 +5,33 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   getData: null,
-  saveNewItem: ['id'],
-  deleteItem: ['id'],
-  updateItem: ['id', 'name', 'title']
+  add: ['data'],
+  delete: ['id'],
+  update: ['id', 'name', 'title']
 })
 
-export const LoginTypes = Types
+export const InventoryTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  data: null,
+  items: [],
   fetching: null
+})
+
+/* ------------- Reducers ------------- */
+
+// attempting to get data from db
+export const request = (state) => state.merge({ fetching: true })
+
+// add item
+export const add = (state, itemObj) =>
+  state.merge({ fetching: false, items: [...state.items, itemObj] })
+
+/* ------------- Hookup Reducers To Types ------------- */
+
+export const reducer = createReducer(INITIAL_STATE, {
+  [Types.GET_DATA]: request,
+  [Types.ADD]: add
 })

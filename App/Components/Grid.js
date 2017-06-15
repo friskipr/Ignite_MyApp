@@ -66,7 +66,7 @@ export default class SimpleGrid extends React.Component {
     return (
               this.state.gridHeaders
                   .map((hText, i) => (
-                    <View key={i} style={[{flex:1, borderWidth: .5, borderColor: '#000'}]}>
+                    <View key={i} style={[{flex:1, borderWidth: .5, borderColor: '#000', alignItems: 'center'}]}>
                       <Text>
                         {hText}
                       </Text>

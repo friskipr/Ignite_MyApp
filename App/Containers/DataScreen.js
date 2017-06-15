@@ -5,12 +5,13 @@ import api from '../Services/DataApi'
 import _ from 'lodash'
 import styles from './Styles/DataScreenStyles'
 import { Icon, Text } from 'react-native-elements'
+import { connect } from 'react-redux'
 
-export default class DataScreen extends React.Component {
+class DataScreen extends React.Component {
     constructor(props) {    
         super(props)                
         this.state = {
-            data: null
+            data: this.props.inventories
         }
     }
 
@@ -20,27 +21,37 @@ export default class DataScreen extends React.Component {
            .catch( e => alert(e) )
     }
 
-    _getHeaders() {
+    getHeaders() {
         let header = []
-        let valid = this.state.data && this.state.data.length
+        let valid = this.props.inventories && this.props.inventories.length
         
         if (valid)
-            _.forIn(this.state.data[0], (value, key) => header.push(key))
+            _.forIn(this.props.inventories[0].data, (value, key) => header.push(key))
 
         return header
     }
 
+    getContent() {
+        let content = []
+        let valid = this.props.inventories && this.props.inventories.length
+        
+        if (valid)
+            _.forIn(this.props.inventories, (value, key) => content.push(value.data))
+            
+        return content
+    }
+
     render () {
         const { navigate } = this.props.navigation
-
+        
         return (
             <View style={{flex:1}}>
                 <Text h2
                     style={styles.tableHeading}>Inventory Table</Text>
-
+                
                 <SimpleGrid
-                    headers={this._getHeaders()}
-                    content={this.state.data}
+                    headers={this.getHeaders()}
+                    content={this.getContent()}
                 />
 
                 <Icon
@@ -51,3 +62,17 @@ export default class DataScreen extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    inventories: state.inventory.items
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    
+  }
+}
+
+export default connect(mapStateToProps, {})(DataScreen)

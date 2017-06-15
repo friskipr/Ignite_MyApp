@@ -1,14 +1,33 @@
 import React from 'react'
 import { ScrollView, Text, KeyboardAvoidingView, View } from 'react-native'
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
+import InventoryActions from '../Redux/InventoryRedux'
+import { connect } from 'react-redux'
 
-export default class DataFormScreen extends React.Component {    
+class DataFormScreen extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            name: '',
+            description: '',
+            quantity: '',
+            price: '',
+            sku: ''
+        }
+    }
+
     focusNextField(nextField){
         this.refs[nextField].focus(nextField);
     }
 
+    handleSave() {
+        this.props.add(this.state)
+        this.props.navigation.goBack()        
+    }
+
     render() {
-        const { navigate } = this.props.navigation
+        window.me = this.props
+        const { name, description, quantity, price, sku } = this.state
 
         return (
             <View style={[{flex: 1}]}>
@@ -20,6 +39,8 @@ export default class DataFormScreen extends React.Component {
                         returnKeyType='next'
                         onSubmitEditing={() => this.focusNextField('description')}
                         blurOnSubmit={false}
+                        value={name}
+                        onChangeText={e => this.setState({ name: e })}
                     />                    
 
                     <FormLabel>Description</FormLabel>
@@ -29,6 +50,8 @@ export default class DataFormScreen extends React.Component {
                         returnKeyType='next'
                         onSubmitEditing={() => this.focusNextField('quantity')}
                         blurOnSubmit={false}
+                        value={description}
+                        onChangeText={e => this.setState({ description: e })}
                     />
 
                     <FormLabel>Quantity</FormLabel>
@@ -39,6 +62,8 @@ export default class DataFormScreen extends React.Component {
                         onSubmitEditing={() => this.focusNextField('price')}
                         blurOnSubmit={false}
                         keyboardType='numeric'
+                        value={quantity}
+                        onChangeText={e => this.setState({ quantity: e })}
                     />
 
                     <FormLabel>Price</FormLabel>
@@ -50,6 +75,8 @@ export default class DataFormScreen extends React.Component {
                         onSubmitEditing={() => this.focusNextField('sku')}
                         blurOnSubmit={false}
                         keyboardType='numeric'
+                        value={price}
+                        onChangeText={e => this.setState({ price: e })}
                     />
 
                     <FormLabel>SKU</FormLabel>
@@ -57,6 +84,8 @@ export default class DataFormScreen extends React.Component {
                         ref='sku'
                         textInputRef='sku'
                         returnKeyType='next'
+                        value={sku}
+                        onChangeText={e => this.setState({ sku: e.toUpperCase() })}
                     />
                                     
                     <Button     
@@ -65,6 +94,7 @@ export default class DataFormScreen extends React.Component {
                         backgroundColor='black'
                         icon={{name: 'add'}}
                         title='SAVE NEW ITEM'
+                        onPress={() => this.handleSave()}
                     />
                     
                 </ScrollView>
@@ -72,3 +102,17 @@ export default class DataFormScreen extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    add: (data) => dispatch(InventoryActions.add(data))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(DataFormScreen)
