@@ -13,74 +13,98 @@ export default class SimpleGrid extends React.Component {
   }
 
   constructor(props) {
-    super(props)
-    const { headers, content } = this.props
+    super(props)    
     this.state = {
       gridHeaders: [],
-      gridData: []
+      gridData: [],
+      content: [],
+      key: this.props.keyName
     }
+  }
+
+  getHeader(content) {
+    let header = []
+    if (content && content.length) {
+      _.forIn(content[0], (value, key) => {      
+        if (key !== "ID") header.push(key)
+      })
+    }
+
+    this.setState({ gridHeaders: header })
+  }
+
+  getContent(content) {
+    this.setState({ gridData: content })
   }
 
   componentWillReceiveProps(nextProps) {
-    if (! _.isEqual(this.props.headers, nextProps.headers))
-      this.setState({ gridHeaders: nextProps.headers })
+    if (_.isEqual(this.state.content, nextProps.content)) return
 
-    if (! _.isEqual(this.props.content, nextProps.content)) {
-      let content = []
-      
-      for (let arr of nextProps.content) {
-        let val = []
-        _.forIn(arr, (value, key) => val.push(value))
-        content.push(val)
-      }
-    
-      this.setState({ gridData: content })      
-    }
+    const content = nextProps.content
+    this.setState({ content: content })
+    this.getHeader(content)
+    this.getContent(content)    
   }
 
   _generateRow() {
+    let key = this.state.key
     return (
               this.state.gridData
-                  .map((rowText, j) => (
-                    <View key={j} style={[{flex:1, flexDirection:'row'}]}>
-                      { this._generateRowContent(rowText) }                      
-                    </View>
+                  .map((row, j) => (
+                    <Row 
+                      key={j} 
+                      style={[{flex:1, flexDirection:'row'}]} 
+                      onPress={() => this.props.onRowPress(row[key])}
+                    >
+                      { this._generateRowContent(row) }
+                    </Row>
                     ))
            )
   }
 
   _generateRowContent(row) {
-    return (
-              row
-                .map((content, k) => (
-                  <View key={k} style={[{flex:1, borderWidth: .5, borderColor: '#000'}]}>
-                    <Text>
-                      {content.toString()}
-                    </Text>
-                  </View>
-                ))
-          )
+    let component = []
+
+    _.forIn(row, (value, key) => {
+      if (key != 'ID') {
+        component.push(
+          <Col 
+            key={key} 
+            style={[{flex:1, borderWidth: .5, borderColor: '#000'}]}
+          >
+            <Text>
+              {value.toString()}
+            </Text>
+          </Col>
+        )
+      }
+    })
+
+    return component
   }
 
   _generateHeader() {
     return (
               this.state.gridHeaders
                   .map((hText, i) => (
-                    <View key={i} style={[{flex:1, borderWidth: .5, borderColor: '#000', alignItems: 'center'}]}>
+                    <Col 
+                      key={i} 
+                      style={[{flex:1, borderWidth: .2, borderColor: '#000', alignItems: 'center'}]}
+                    >
                       <Text>
                         {hText}
                       </Text>
-                    </View>
+                    </Col>
                   ))
           )
   }
 
-  render () {    
-    return (
+  render () {
+    const component = (
               <View style={[{flex:1}]}>
-                <View style={[{flexDirection: 'row', height: 30, backgroundColor: 'grey'}]}>
+                <Grid style={[{flexDirection: 'row', height: 30, backgroundColor: 'grey'}]}>
                   { this._generateHeader() }
-                </View>
+                </Grid>
                 <View style={[{flex:1}]}>
                   <ScrollView>
                     { this._generateRow() }
@@ -88,5 +112,7 @@ export default class SimpleGrid extends React.Component {
                 </View>
               </View>
            )
+           
+     return this.state.gridData.length > 0 ? component : null
   }
 }

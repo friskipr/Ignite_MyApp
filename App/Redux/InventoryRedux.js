@@ -1,6 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
-
+import GUID from '../Lib/GUID'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
@@ -14,7 +14,6 @@ export const InventoryTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
-
 export const INITIAL_STATE = Immutable({
   items: [],
   fetching: null
@@ -26,8 +25,10 @@ export const INITIAL_STATE = Immutable({
 export const request = (state) => state.merge({ fetching: true })
 
 // add item
-export const add = (state, itemObj) =>
-  state.merge({ fetching: false, items: [...state.items, itemObj] })
+export const add = (state, itemObj) => {
+  itemObj.data["ID"] = GUID.createGUID()
+  return state.merge({ fetching: false, items: [...state.items, itemObj] })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 

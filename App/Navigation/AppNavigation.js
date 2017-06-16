@@ -1,8 +1,6 @@
 import { StackNavigator } from 'react-navigation'
 import LaunchScreen from '../Containers/LaunchScreen'
 import LoginScreen from '../Containers/LoginScreen'
-import DataScreen from '../Containers/DataScreen'
-import DataFormScreen from '../Containers/DataFormScreen'
 import MainScreen from '../Containers/MainScreen'
 import styles from './Styles/NavigationStyles'
 
@@ -13,13 +11,6 @@ const PrimaryNav = StackNavigator({
     screen: LoginScreen,
     navigationOptions: { title: 'Login' }
   },
-  DataScreen: {
-    screen: DataScreen
-  },
-  DataFormScreen: {
-    screen: DataFormScreen,
-    navigationOptions: { title: 'Inventory Form' }
-  },
   MainScreen: {
     screen: MainScreen
   }
@@ -27,7 +18,7 @@ const PrimaryNav = StackNavigator({
   // Default config for all screens
   headerMode: 'none',
   //initialRouteName: 'LoginScreen',
-  initialRouteName: 'DataScreen',
+  initialRouteName: 'MainScreen',
   navigationOptions: {
     headerStyle: styles.header
   }

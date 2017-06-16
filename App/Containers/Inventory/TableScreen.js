@@ -1,13 +1,14 @@
 import React from 'react'
 import { ScrollView, Image, View } from 'react-native'
-import SimpleGrid from '../Components/Grid'
-import api from '../Services/DataApi'
+import SimpleGrid from '../../Components/Grid'
+import api from '../../Services/DataApi'
 import _ from 'lodash'
 import styles from './Styles/DataScreenStyles'
 import { Icon, Text } from 'react-native-elements'
 import { connect } from 'react-redux'
+import Form from './DataFormScreen'
 
-class DataScreen extends React.Component {
+class TableScreen extends React.Component {
     constructor(props) {    
         super(props)                
         this.state = {
@@ -37,8 +38,12 @@ class DataScreen extends React.Component {
         
         if (valid)
             _.forIn(this.props.inventories, (value, key) => content.push(value.data))
-            
+        
         return content
+    }
+
+    handleRowPress = (data) => {
+        alert(data)
     }
 
     render () {
@@ -50,13 +55,14 @@ class DataScreen extends React.Component {
                     style={styles.tableHeading}>Inventory Table</Text>
                 
                 <SimpleGrid
-                    headers={this.getHeaders()}
+                    keyName='ID'
                     content={this.getContent()}
+                    onRowPress={this.handleRowPress}
                 />
 
                 <Icon
                     name='add-box' 
-                    onPress={() => navigate('DataFormScreen')}
+                    onPress={() => navigate('Form')}
                 />
             </View>
         )
@@ -75,4 +81,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, {})(DataScreen)
+export default connect(mapStateToProps, {})(TableScreen)

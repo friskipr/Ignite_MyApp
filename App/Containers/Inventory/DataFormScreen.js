@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScrollView, Text, KeyboardAvoidingView, View } from 'react-native'
 import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import InventoryActions from '../Redux/InventoryRedux'
+import InventoryActions from '../../Redux/InventoryRedux'
 import { connect } from 'react-redux'
 
 class DataFormScreen extends React.Component {
