@@ -7,12 +7,24 @@ import { connect } from 'react-redux'
 class DataFormScreen extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
+        this.state = {            
             name: '',
             description: '',
             quantity: '',
             price: '',
             sku: ''
+        }
+        
+        this.mode = 'new'
+    }
+
+    componentDidMount() {
+        const params = this.props.navigation.state.params
+        if (params) {
+            this.ID = params.guid
+            const data = this.props.default.find(x => x.ID === this.ID)
+            this.setState({ ...data })
+            this.mode = 'update'
         }
     }
 
@@ -21,8 +33,20 @@ class DataFormScreen extends React.Component {
     }
 
     handleSave() {
-        this.props.add(this.state)
-        this.props.navigation.goBack()        
+        if (this.mode === 'new') {
+            this.props.add(this.state)
+        } else {
+            this.props.update(this.ID, this.state)
+        }
+
+        this.props.navigation.goBack()
+    }
+
+    getIcon() {
+        let name = (this.mode === 'new') ? 'add' : 'archive'
+        let icon = {name: name}
+        
+        return icon
     }
 
     render() {
@@ -92,8 +116,8 @@ class DataFormScreen extends React.Component {
                         raised  
                         buttonStyle={{'marginTop': 30}}
                         backgroundColor='black'
-                        icon={{name: 'add'}}
-                        title='SAVE NEW ITEM'
+                        icon={this.getIcon()}
+                        title={(this.mode === 'new') ? 'CREATE NEW ITEM' : 'UPDATE ITEM'}
                         onPress={() => this.handleSave()}
                     />
                     
@@ -105,14 +129,22 @@ class DataFormScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    
+    default: state.inventory.items
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    add: (data) => dispatch(InventoryActions.add(data))
+    add: (data) => dispatch(InventoryActions.add(data)),
+    update: (id, data) => dispatch(InventoryActions.update(id, {
+        ID: data.ID,
+        name: data.name,
+        description: data.description,
+        quantity: data.quantity,
+        price: data.price,
+        sku: data.sku
+    }))
   }
 }
 
-export default connect(null, mapDispatchToProps)(DataFormScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(DataFormScreen)

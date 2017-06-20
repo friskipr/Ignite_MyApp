@@ -7,6 +7,7 @@ import styles from './Styles/DataScreenStyles'
 import { Icon, Text } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Form from './DataFormScreen'
+import InventoryActions from '../../Redux/InventoryRedux'
 
 class TableScreen extends React.Component {
     constructor(props) {    
@@ -37,18 +38,19 @@ class TableScreen extends React.Component {
         let valid = this.props.inventories && this.props.inventories.length
         
         if (valid)
-            _.forIn(this.props.inventories, (value, key) => content.push(value.data))
+            _.forIn(this.props.inventories, (value, key) => content.push(value))
         
         return content
     }
 
     handleRowPress = (data) => {
-        alert(data)
+        const { navigate } = this.props.navigation
+        navigate('Form', { guid: data })        
     }
 
     render () {
         const { navigate } = this.props.navigation
-        
+
         return (
             <View style={{flex:1}}>
                 <Text h2
@@ -77,8 +79,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    
+    default: () => dispatch(InventoryActions.getData())
   }
 }
 
-export default connect(mapStateToProps, {})(TableScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(TableScreen)
