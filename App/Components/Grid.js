@@ -5,8 +5,9 @@ import { Colors, Metrics } from '../Themes/'
 import {Grid, Col, Row} from 'react-native-elements';
 import PropTypes from 'prop-types'
 import _ from 'lodash'
+import { GenericTablePage as Table } from 'react-native-generic-table-page'
 
-export default class SimpleGrid extends React.Component {
+/*export default class SimpleGrid extends React.Component {
   static propTypes = {
     headers: PropTypes.array,
     content: PropTypes.array
@@ -114,5 +115,45 @@ export default class SimpleGrid extends React.Component {
            )
            
      return this.state.gridData.length > 0 ? component : null
+  }
+}
+*/
+
+export default class SimpleGrid extends React.Component {
+  col = [
+      {
+        key: 'id',
+        width: 20,
+        title: 'ID',
+        sortable: true
+      },
+      {
+        key: 'name',
+        width: 100,
+        title: 'Name',
+        sortable: true
+      }
+  ]
+
+  data = [
+      {
+        id: 1,
+        name: 'Saya'
+      },
+      {
+        id: 2,
+        name: 'Kamu'
+      }
+  ]
+
+  render() {
+
+    return (
+      <Table
+        columns={this.col}
+        data={this.data}
+        searchKey='name'
+      />
+    )
   }
 }

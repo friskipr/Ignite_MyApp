@@ -8,6 +8,7 @@ import { Icon, Text } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Form from './DataFormScreen'
 import InventoryActions from '../../Redux/InventoryRedux'
+import { GenericTablePage as Table } from 'react-native-generic-table-page'
 
 class TableScreen extends React.Component {
     constructor(props) {    
@@ -40,9 +41,44 @@ class TableScreen extends React.Component {
         if (valid)
             _.forIn(this.props.inventories, (value, key) => content.push(value))
         
+        console.log(content)
         return content
     }
 
+    getColumnsName() {
+        return [
+            {
+                key: 'name',
+                width: 20,
+                title: 'Name',
+                sortable: true
+            },
+            {
+                key: 'quantity',
+                width: 15,
+                title: 'Q',
+                sortable: true
+            },
+            {
+                key: 'price',
+                width: 15,
+                title: 'Rp',
+                sortable: true
+            },
+            {
+                key: 'description',
+                width: 30,
+                title: 'Description'                
+            },
+            {
+                key: 'sku',
+                width: 20,
+                title: 'SKU',
+                sortable: true
+            }
+        ]
+    }
+    
     handleRowPress = (data) => {
         const { navigate } = this.props.navigation
         navigate('Form', { guid: data })        
@@ -51,25 +87,50 @@ class TableScreen extends React.Component {
     render () {
         const { navigate } = this.props.navigation
 
-        return (
-            <View style={{flex:1}}>
+        /*return (
+            <View >
                 <Text h2
                     style={styles.tableHeading}>Inventory Table</Text>
-                
-                <SimpleGrid
-                    keyName='ID'
-                    content={this.getContent()}
-                    onRowPress={this.handleRowPress}
-                />
-
+                <View >
+                   <Table
+                        columns={this.getColumnsName()}
+                        data={this.getContent()}
+                    />
+                </View>
                 <Icon
                     name='add-box' 
                     onPress={() => navigate('Form')}
                 />
             </View>
+        )*/
+
+        return (
+            <View>
+            <Table
+                columns={this.getColumnsName()}
+                data={this.getContent()}
+                topRoute={true}
+                dataTableStyles={
+                    {
+                        dataTable: {backgroundColor: 'yellow', flex: 1, zIndex: 1}
+                    }
+                }
+            />
+            </View>
         )
     }
 }
+/*
+<SimpleGrid
+                    keyName='ID'
+                    content={this.getContent()}
+                    onRowPress={this.handleRowPress}
+
+                    dataTableStyles={{dataTable: {backgroundColor:'red'}}}
+                />
+
+                 
+*/
 
 const mapStateToProps = (state) => {
   return {
