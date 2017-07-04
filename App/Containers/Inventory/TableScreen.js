@@ -4,7 +4,7 @@ import SimpleGrid from '../../Components/Grid'
 import api from '../../Services/DataApi'
 import _ from 'lodash'
 import styles from './Styles/DataScreenStyles'
-import { Icon, Text } from 'react-native-elements'
+import { Icon, Text, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import Form from './DataFormScreen'
 import InventoryActions from '../../Redux/InventoryRedux'
@@ -77,60 +77,58 @@ class TableScreen extends React.Component {
                 sortable: true
             }
         ]
-    }
+    }    
     
     handleRowPress = (data) => {
         const { navigate } = this.props.navigation
-        navigate('Form', { guid: data })        
+        navigate('Form', { guid: data.ID })        
     }
 
     render () {
         const { navigate } = this.props.navigation
+        const contents = this.getContent()
 
-        /*return (
-            <View >
+        return (            
+            <View style={{flex:1, backgroundColor: '#fff'}}>
                 <Text h2
                     style={styles.tableHeading}>Inventory Table</Text>
-                <View >
-                   <Table
-                        columns={this.getColumnsName()}
-                        data={this.getContent()}
-                    />
-                </View>
-                <Icon
-                    name='add-box' 
-                    onPress={() => navigate('Form')}
-                />
-            </View>
-        )*/
-
-        return (
-            <View>
-            <Table
-                columns={this.getColumnsName()}
-                data={this.getContent()}
-                topRoute={true}
-                dataTableStyles={
+                <View style={{flex:1}}>
                     {
-                        dataTable: {backgroundColor: 'yellow', flex: 1, zIndex: 1}
+                        contents.length > 0 ?
+                            <Table
+                                columns={this.getColumnsName()}
+                                data={contents} 
+                                topRoute={true} 
+                                onRowPress={this.handleRowPress} 
+                                searchKey='name'
+                                pageStyles={
+                                    {
+                                        container: {
+                                            borderColor: '#fff',
+                                            borderWidth: 0.5
+                                        }
+                                    }
+                                } /> :
+                            <Text> No Data Yet</Text>
                     }
-                }
-            />
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+                    <Button
+                        raised
+                        title='+'
+                        onPress={() => navigate('Form')} 
+                        buttonStyle={{
+                            backgroundColor: 'black',
+                            borderRadius: 30,
+                            width: 50,
+                            height: 50                            
+                        }}
+                        fontSize={40} />
+                </View>
             </View>
         )
     }
 }
-/*
-<SimpleGrid
-                    keyName='ID'
-                    content={this.getContent()}
-                    onRowPress={this.handleRowPress}
-
-                    dataTableStyles={{dataTable: {backgroundColor:'red'}}}
-                />
-
-                 
-*/
 
 const mapStateToProps = (state) => {
   return {
